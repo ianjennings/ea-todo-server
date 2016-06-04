@@ -3,7 +3,8 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const request = require('request');
-const isDevelopment = process.env.NODE_ENV === 'development';
+// const isDevelopment = process.env.NODE_ENV === 'development';
+const isDevelopment = false;
 
 var version;
 // Fetch manifest info every 5 minutes
@@ -23,7 +24,7 @@ app.get('/updates/latest', (req, res) => {
             res.status(204).end();
         } else {
             res.json({
-                url: `${getBaseUrl()}/updates/latest/osx/eatodo-${version}-mac.zip`
+                url: `${getBaseUrl()}/updates/latest/osx/ScreenSquid-${version}-mac.zip`
             });
         }
     }
@@ -36,7 +37,7 @@ let getBaseUrl = () => {
     if (isDevelopment) {
         return 'http://localhost:3000';
     } else {
-        return 'http://eatodo.s3.amazonaws.com'
+        return 'http://screensquid-updates.s3.amazonaws.com'
     }
 }
 
