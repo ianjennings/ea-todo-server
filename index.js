@@ -33,6 +33,21 @@ app.get('/updates/latest', (req, res) => {
     }
 });
 
+
+app.get('/download/latest', (req, res) => {
+
+    var path = `osx/ScreenSquid-${version}.dmg`;
+
+    if(req.query.platform && req.query.platform == "win32") {
+        path = `${req.query.platform}/ScreenSquid Setup ${version}-ia32.exe`;
+    }
+
+    console.log(`${getBaseUrl()}/updates/latest/${path}`)
+
+    res.redirect(`${getBaseUrl()}/updates/latest/${path}`);
+
+});
+
 let getBaseUrl = () => {
     if (isDevelopment) {
         return 'http://localhost:3000';
@@ -46,6 +61,7 @@ let getVersion = () => {
     request.get(versionUrl, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             version = body;
+            console.log('version is ' + version)
         }
         else if (error) {
             console.error(error);
@@ -58,6 +74,6 @@ let getVersion = () => {
 const versionUrl = `${getBaseUrl()}/updates/latest/osx/VERSION`;
 getVersion();
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log(`Express server listening on port ${process.env.PORT}`);
 });
